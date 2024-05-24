@@ -5,3 +5,4 @@
 **/.Debug
 **/.idea
 **.backup
+**docker-compose.yml
