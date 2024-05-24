@@ -1,0 +1,23 @@
+version: '3.4'
+
+networks:
+  parking-lot-network:
+    driver: bridge
+
+services:
+  parking-lot-api:
+    image: parking-lot-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - parking-lot-network
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      AWS_ACCESS_KEY_ID: "AKIAUZFYLXW6EVZ5PXEC"
+      AWS_SECRET_ACCESS_KEY: "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"
+      DYNAMO_DB_TABLE_NAME: "ParkingTickets"
+      
+      
