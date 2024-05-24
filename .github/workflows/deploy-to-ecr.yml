@@ -19,25 +19,28 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore ./ParkingLotAPI
+        run: dotnet restore src/ParkingLotAPI/ParkingLotAPI.csproj
 
       - name: Build
-        run: dotnet build --no-restore ./ParkingLotAPI
+        run: dotnet build src/ParkingLotAPI/ParkingLotAPI.csproj --no-restore
 
       - name: Publish the application
-        run: dotnet publish ./ParkingLotAPI --configuration Release --output ./app --no-build --no-restore
+        run: dotnet publish src/ParkingLotAPI/ParkingLotAPI.csproj --configuration Release --output src/ParkingLotAPI/app --no-build --no-restore
 
-      - name: Log in to Amazon ECR
-        id: ecr-login
-        uses: aws-actions/amazon-ecr-login@v1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Log in to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v1
+
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest -f ./Dockerfile .
+          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest -f src/ParkingLotAPI/Dockerfile src/ParkingLotAPI
 
       - name: Push Docker image to Amazon ECR
         run: |
