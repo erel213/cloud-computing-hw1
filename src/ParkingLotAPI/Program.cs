@@ -2,6 +2,7 @@ using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using ParkingLotAPI.Handlers;
 using ParkingLotAPI.Repositories;
 
@@ -40,6 +41,10 @@ builder.Services.AddAWSService<IAmazonDynamoDB>();
 
 #endregion
 
+builder.Services.AddHealthChecks()
+    .AddCheck("health", () =>
+        HealthCheckResult.Healthy("The check indicates a healthy result."), tags: new[] { "example" });
+
 #region Configure Dependecy Injection Containers
 
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
@@ -55,6 +60,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Map health checks to a specific endpoint
+app.MapHealthChecks("/health");
 
 app.MapControllers();
 
