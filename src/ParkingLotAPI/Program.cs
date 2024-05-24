@@ -15,13 +15,28 @@ builder.Services.AddSwaggerGen();
 
 #region Configure AWS
 
-AWSOptions awsOptions = new AWSOptions()
+AWSOptions awsOptions;
+var env = Environment.GetEnvironmentVariable("ENV_VAR");
+if (env == "production")
 {
-    Credentials = new EnvironmentVariablesAWSCredentials(),
-    Region = RegionEndpoint.EUWest1
-};
+    awsOptions = new AWSOptions()
+    {
+        Region = RegionEndpoint.EUWest1
+    };
+}
+
+else
+{   
+    awsOptions = new AWSOptions()
+    {
+        Credentials = new EnvironmentVariablesAWSCredentials(),
+        Region = RegionEndpoint.EUWest1
+    };
+}
+
 builder.Services.AddDefaultAWSOptions(awsOptions);
 builder.Services.AddAWSService<IAmazonDynamoDB>();
+
 
 #endregion
 
