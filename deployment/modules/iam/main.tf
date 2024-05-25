@@ -69,3 +69,28 @@ data "aws_iam_policy_document" "instance_assume_role_policy" {
   }
   
 }
+
+resource "aws_iam_policy" "ecs_task_ecr_policy" {
+  name        = "ECSTaskECRPolicy"
+  description = "Policy to allow ECS tasks to access ECR"
+  policy      = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetAuthorizationToken"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_ecr_policy" {
+  policy_arn = aws_iam_policy.ecs_task_ecr_policy.arn
+  role     = aws_iam_role.ecs_task_execution_role.name
+}

@@ -3,6 +3,11 @@ variable ecs_cluster_name {
     type = string
 }
 
+variable "vpc_id" {
+    description = "value of the vpc id"
+    type = string
+}
+
 variable "task_definition_name" {
     description = "ECS task definition name"
     type = string
@@ -41,4 +46,29 @@ variable "container_name" {
 variable "container_port" {
   description = "value of port for container"
   type = number
+}
+
+variable "target_group_arn" {
+  description = "target group arn"
+  type = string
+}
+
+variable "alb_security_group_Id"{
+  description = "security group id for alb"
+  type = string
+}
+
+variable "ecs_task_execution_role_arn" {
+  description = "value of the ecs task execution role arn"
+  type = string
+}
+
+variable "aws_region" {
+  description = "aws region"
+  type = string
+}
+
+variable "cloudwatch_log_group_name" {
+  description = "cloudwatch log group name"
+  type = string
 }
