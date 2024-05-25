@@ -63,6 +63,11 @@ variable "ecs_task_execution_role_arn" {
   type = string
 }
 
+variable "ecs_task_role_arn" {
+  description = "value of the ecs task role arn"
+  type = string
+}
+
 variable "aws_region" {
   description = "aws region"
   type = string

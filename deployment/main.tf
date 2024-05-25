@@ -43,6 +43,7 @@ module "ecs" {
   target_group_arn = module.alb.target_group_arn
   aws_region = "eu-west-1"
   cloudwatch_log_group_name = module.cloudwatch.ecs_task_definition_log_group_name
+  ecs_task_role_arn = module.iam.ecs_task_role_arn
 }
 
 module "users" {
