@@ -65,7 +65,7 @@ jobs:
             --cluster $ECS_CLUSTER \
             --service $ECS_SERVICE \
             --force-new-deployment \
-            --${{env.DESIRED_COUNT}}
+            -- ${{env.DESIRED_COUNT}}
       
       - name: Wait for service to stabilize
         env:
