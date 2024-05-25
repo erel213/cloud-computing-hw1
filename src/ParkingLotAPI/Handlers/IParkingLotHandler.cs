@@ -6,5 +6,5 @@ public interface IParkingLotHandler
 {
     public Task<ServiceResponse<CheckinParkingLotDto>> EnterParkingLot(string plate, int parkingLot);
 
-    public ServiceResponse<CheckoutParkingLotDto> CheckoutParkingLot(int ticketId);
+    public Task<ServiceResponse<CheckoutParkingLotDto>> CheckoutParkingLot(Guid ticketId);
 }

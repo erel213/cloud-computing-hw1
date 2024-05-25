@@ -39,8 +39,53 @@ public class ParkingLotHandler : IParkingLotHandler
         }
     }
 
-    public ServiceResponse<CheckoutParkingLotDto> CheckoutParkingLot(int ticketId)
+    public async Task<ServiceResponse<CheckoutParkingLotDto>> CheckoutParkingLot(Guid ticketId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var ticket = await _ticketRepository.GetTicket(ticketId);
+
+            if (ticket == null)
+            {
+                return new ServiceResponse<CheckoutParkingLotDto> { Success = false, Message = "Ticket not found" };
+            }
+
+            if (ticket.IsCheckout)
+            {
+                return new ServiceResponse<CheckoutParkingLotDto>
+                {
+                    Success = false, Message = "Ticket has already been checked out"
+                };
+            }
+
+            var checkoutDto = new CheckoutParkingLotDto
+            {
+                LicensePlate = ticket.LicensePlate,
+                ParkedTime = DateTime.UtcNow - ticket.EntryTime,
+                ParkingLotId = ticket.ParkingLotId,
+                Charge = CalculateCharge(DateTime.UtcNow - ticket.EntryTime)
+            };
+            ticket.Checkout();
+            await _ticketRepository.CreateTicket(ticket);
+            return new ServiceResponse<CheckoutParkingLotDto>
+            {
+                Success = true, Data = checkoutDto
+            };
+        }
+
+        catch (Exception exception)
+        {
+            return new ServiceResponse<CheckoutParkingLotDto>
+            {
+                Success = false, Message = exception.Message
+            };
+        }
+    }
+
+    private int CalculateCharge(TimeSpan parkingTime)
+    {
+        var chargeUnit = (int)Math.Floor(parkingTime.TotalMinutes / 15);
+
+        return chargeUnit * 10;
     }
 }
