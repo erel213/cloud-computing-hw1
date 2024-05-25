@@ -1,0 +1,89 @@
+{
+	"info": {
+		"_postman_id": "b28d8b71-bad2-4d34-85a0-8ddde9c66785",
+		"name": "ParkingLot",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "26640146"
+	},
+	"item": [
+		{
+			"name": "Enter parking",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/entry?plate=49-201-34&parkingLot=100",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"entry"
+					],
+					"query": [
+						{
+							"key": "plate",
+							"value": "49-201-34"
+						},
+						{
+							"key": "parkingLot",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Exit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/exit?ticketId=2401b1ee-b4ae-4f36-b060-c3d87be67c48",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"exit"
+					],
+					"query": [
+						{
+							"key": "ticketId",
+							"value": "2401b1ee-b4ae-4f36-b060-c3d87be67c48"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://my-alb-1307041281.eu-west-1.elb.amazonaws.com",
+			"type": "string"
+		}
+	]
+}
