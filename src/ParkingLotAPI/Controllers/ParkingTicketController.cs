@@ -35,4 +35,25 @@ public class ParkingTicketController : ControllerBase
             return StatusCode(400, exceptionResponse);
         }
     }
+
+    [HttpPost("exit")]
+    public async Task<ActionResult<ServiceResponse<CheckoutParkingLotDto>>> CheckoutParking(Guid ticketId)
+    {
+        try
+        {
+            var response = await _parkingLotHandler.CheckoutParkingLot(ticketId);
+            return StatusCode(200, response);
+        }
+
+        catch (Exception exception)
+        {
+            var exceptionResponse = new ServiceResponse<CheckoutParkingLotDto>()
+            {
+                Success = false,
+                Message = $"Failed to checkout from parking lot {exception.Message}"
+            };
+
+            return StatusCode(400, exceptionResponse);
+        }
+    }
 }
