@@ -39,7 +39,7 @@ public class TicketRepository : ITicketRepository
         }
     }
 
-    public async Task<Ticket?> GetTicket(Ticket ticket)
+    public async Task<Ticket?> GetTicket(Guid ticketId)
     {
         try
         {
@@ -48,7 +48,7 @@ public class TicketRepository : ITicketRepository
                 TableName = Constants.Constants.DynamoDbConstants.DynamodbTableName,
                 Key = new Dictionary<string, AttributeValue>
                 {
-                    { "TicketId", new AttributeValue { S = ticket.TicketId.ToString() } }
+                    { "TicketId", new AttributeValue { S = ticketId.ToString() } }
                 }
             };
 
