@@ -35,7 +35,7 @@ public class TicketRepository : ITicketRepository
 
         catch (Exception exception)
         {
-            throw new Exception("Failed to create ticket in DynamoDB", exception);
+            throw new Exception($"Failed to create ticket in DynamoDB: {exception.Message}");
         }
     }
 
@@ -72,7 +72,7 @@ public class TicketRepository : ITicketRepository
 
         catch (Exception exception)
         {
-            throw new Exception("Failed to retrieve ticket from DynamoDB", exception);
+            throw new Exception($"Failed to retrieve ticket from DynamoDB: {exception.Message}");
         }
     }
 }

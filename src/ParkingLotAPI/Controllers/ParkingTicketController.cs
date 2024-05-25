@@ -21,6 +21,10 @@ public class ParkingTicketController : ControllerBase
         try
         {   
             var response = await _parkingLotHandler.EnterParkingLot(plate, parkingLot);
+            if (!response.Success)
+            {
+                return StatusCode(400, response);
+            }
             return  StatusCode(200, response);
         }
 
@@ -32,7 +36,7 @@ public class ParkingTicketController : ControllerBase
                 Message = $"Failed to enter to parking lot {exception.Message}"
             };
 
-            return StatusCode(400, exceptionResponse);
+            return StatusCode(500, exceptionResponse);
         }
     }
 
@@ -42,6 +46,10 @@ public class ParkingTicketController : ControllerBase
         try
         {
             var response = await _parkingLotHandler.CheckoutParkingLot(ticketId);
+            if (!response.Success)
+            {
+                return StatusCode(400, response);
+            }
             return StatusCode(200, response);
         }
 
