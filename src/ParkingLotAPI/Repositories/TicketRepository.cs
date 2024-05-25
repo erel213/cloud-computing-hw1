@@ -63,7 +63,7 @@ public class TicketRepository : ITicketRepository
                 licensePlate: getResponse.Item["LicensePlate"].S,
                 entryTime: DateTime.Parse(getResponse.Item["EntryTime"].S),
                 parkingLotId: int.Parse(getResponse.Item["ParkingLotId"].N),
-                ticketId: Guid.Parse(getResponse.Item["TicketId"].N),
+                ticketId: Guid.Parse(getResponse.Item["TicketId"].S),
                 isCheckout: getResponse.Item["IsCheckout"].BOOL
             );
             
