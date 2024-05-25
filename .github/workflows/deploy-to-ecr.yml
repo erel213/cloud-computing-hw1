@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+env:
+  ECS_CLUSTER: "parking_lot_cluster"
+  ECS_SERVICE: "parking_lot_service"
+  CONTAINER_NAME: "parking_lot_container"
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -46,3 +50,29 @@ jobs:
         run: |
           docker tag ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
+
+      - name: Update ECS service with new image
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          ECS_CLUSTER: ${{ env.ECS_CLUSTER }}
+          ECS_SERVICE: ${{ env.ECS_SERVICE }}
+          CONTAINER_NAME: ${{ env.CONTAINER_NAME }}
+          IMAGE_URI: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
+        run: |
+          aws ecs update-service \
+            --region $AWS_REGION \
+            --cluster $ECS_CLUSTER \
+            --service $ECS_SERVICE \
+            --force-new-deployment \
+            --desired-count 1
+      
+      - name: Wait for service to stabilize
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          ECS_CLUSTER: ${{ env.ECS_CLUSTER }}
+          ECS_SERVICE: ${{ env.ECS_SERVICE }}
+        run: |
+          aws ecs wait services-stable \
+            --region $AWS_REGION \
+            --cluster $ECS_CLUSTER \
+            --services $ECS_SERVICE
