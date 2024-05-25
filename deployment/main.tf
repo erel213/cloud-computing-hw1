@@ -44,3 +44,7 @@ module "ecs" {
   aws_region = "eu-west-1"
   cloudwatch_log_group_name = module.cloudwatch.ecs_task_definition_log_group_name
 }
+
+module "users" {
+  source = "./modules/users"
+}
