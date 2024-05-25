@@ -4,12 +4,6 @@ resource "aws_dynamodb_table" "parking_tickets" {
   read_capacity  = 5
   write_capacity = 5
   hash_key       = "TicketId"
-  range_key      = "ParkingLotId"
-
-  attribute {
-    name = "ParkingLotId"
-    type = "N" 
-  }
 
   attribute {
     name = "TicketId"
