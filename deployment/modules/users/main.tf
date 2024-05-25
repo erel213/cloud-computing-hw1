@@ -15,6 +15,7 @@ resource "aws_iam_user_policy" "ci_cd_ecr_policy" {
           "ecr:BatchGetImage",
           "ecr:BatchCheckLayerAvailability",
           "ecr:PutImage",
+          "ecr:GetAuthorizationToken",
           "ecr:InitiateLayerUpload",
           "ecr:UploadLayerPart",
           "ecr:CompleteLayerUpload",
