@@ -22,6 +22,7 @@ if (env == "production")
 {
     awsOptions = new AWSOptions()
     {
+        Credentials = new GenericContainerCredentials(), 
         Region = RegionEndpoint.EUWest1
     };
 }
