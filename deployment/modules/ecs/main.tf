@@ -60,10 +60,6 @@ resource "aws_ecs_task_definition" "app" {
         {
           name  = "ENV_VAR"
           value = "production"
-        },
-        {
-          name =  "AWS_CONTAINER_CREDENTIALS_RELATIVE_URI"
-          value =  "/aws/credentials/"
         }
       ]
       logConfiguration = {
